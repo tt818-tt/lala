@@ -1,156 +1,450 @@
-# 💖 趣味交互爱心页面
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💖 趣味交互页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", "Comic Sans MS", cursive, sans-serif;
+        }
 
-一个充满趣味和浪漫的交互式HTML页面，通过可爱的动画效果和精心设计的用户交互，创造出一个温馨有趣的表白体验。
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
 
-## ✨ 功能特色
+        /* 背景装饰 */
+        .hearts-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
 
-### 🎨 视觉设计
-- **渐变背景**：温馨的粉色系渐变背景
-- **飘浮爱心**：背景中飘动的爱心装饰
-- **毛玻璃效果**：现代化的毛玻璃容器设计
-- **响应式布局**：适配各种屏幕尺寸
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 20px;
+            animation: float 6s ease-in-out infinite;
+        }
 
-### 🎭 交互效果
-- **智能放大**：点击"不要"按钮时，小动物图片会逐渐放大
-- **粒子爆炸**：按钮点击时产生美丽的粒子效果
-- **平滑过渡**：页面切换时的流畅动画
-- **悬停效果**：按钮和图片的悬停动画
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
 
-### 🎯 核心逻辑
-- **渐进式交互**：每次点击"不要"都会放大图片，增加趣味性
-- **强制跳转**：放大到最大倍数后自动跳转到最终页面
-- **直接跳转**：点击"可以"直接跳转到表白成功页面
-- **键盘支持**：支持回车键和空格键操作
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+            transition: all 0.5s ease;
+        }
 
-## 🚀 快速开始
+        .animal-img {
+            width: 300px;
+            height: 200px;
+            margin: 20px auto;
+            border-radius: 15px;
+            object-fit: contain;
+            transition: all 0.3s ease;
+            border: 3px solid #ffb3ba;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-### 方法一：直接打开
-1. 下载 `interactive_love.html` 文件
-2. 双击文件或用浏览器打开
-3. 享受交互体验！
+        .animal-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
 
-### 方法二：本地服务器（推荐）
-```bash
-# 启动本地服务器
-python -m http.server 8080
+        h2 {
+            font-size: 28px;
+            color: #d63384;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s ease-in-out infinite;
+        }
 
-# 在浏览器中访问
-http://localhost:8080/interactive_love.html
-```
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
 
-## 🎮 使用说明
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
 
-### 交互操作
-1. **初始页面**：看到可爱的小动物和问题
-2. **点击选择**：
-   - 💕 **"可以"**：直接跳转到成功页面
-   - 😅 **"不要"**：小动物会逐渐放大，直到强制跳转
-3. **最终页面**：显示温馨的表白成功信息
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-width: 100px;
+        }
 
-### 快捷键
-- **Enter / 空格**：点击"可以"按钮
-- **Escape**：点击"不要"按钮
+        button:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
 
-## 🌈 页面结构
+        button:hover:before {
+            width: 300px;
+            height: 300px;
+        }
 
-```
-初始页面 (init-page)
-├── 小动物图片 (可点击)
-├── 温馨问题
-└── 两个选择按钮
-    ├── "可以"按钮 (yes-btn)
-    └── "不要"按钮 (no-btn)
+        #yes-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            box-shadow: 0 5px 15px rgba(238, 90, 36, 0.4);
+        }
 
-最终页面 (final-page)
-├── 成功表白文字
-├── 两只小动物图片
-└── 温馨祝福语
-```
+        #yes-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(238, 90, 36, 0.6);
+        }
 
-## 🎨 设计亮点
+        #no-btn {
+            background: linear-gradient(45deg, #4834d4, #686de0);
+            box-shadow: 0 5px 15px rgba(72, 52, 212, 0.4);
+        }
 
-### 颜色搭配
-- **主色调**：温馨的粉色系 (#ff9a9e, #fecfef)
-- **按钮颜色**：
-  - 红色渐变："可以"按钮 (#ff6b6b → #ee5a24)
-  - 蓝色渐变："不要"按钮 (#4834d4 → #686de0)
-- **文字颜色**：深粉色强调 (#d63384)
+        #no-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(72, 52, 212, 0.6);
+        }
 
-### 动画效果
-- **飘浮动画**：背景爱心的缓慢飘浮
-- **脉冲动画**：标题文字的轻微跳动
-- **缩放动画**：图片的平滑放大效果
-- **粒子动画**：按钮点击的粒子爆炸
-- **滑入动画**：最终页面的优雅进入
+        .hidden {
+            display: none !important;
+        }
 
-### 响应式设计
-- **移动端适配**：在小屏幕上自动调整大小
-- **触摸友好**：适合触摸操作的按钮大小
-- **灵活布局**：使用flexbox实现自适应布局
+        /* 最终页面样式 */
+        .final-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.8s ease-out;
+        }
 
-## 🔧 自定义选项
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
 
-### 修改问题文字
-```javascript
-// 在HTML中找到这行并修改
-<h2>你愿意成为我的儿子吗？</h2>
-```
+        .final-img {
+            width: 300px;
+            height: 200px;
+            margin: 20px auto;
+            border-radius: 15px;
+            object-fit: contain;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: bounce 1s ease-in-out infinite alternate;
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-### 修改成功文字
-```javascript
-// 在HTML中找到这行并修改
-<div class="final-text">!!!好喜欢你!! ( >◡< )♡°</div>
-```
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
 
-### 调整放大倍数
-```javascript
-// 修改这些值
-const maxScale = 2.5;        // 最大放大倍数
-const scaleStep = 0.3;       // 每次放大的步长
-```
+        .final-text {
+            font-size: 32px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-### 更换图片
-```html
-<!-- 修改图片URL -->
-<img src="https://picsum.photos/200/200?random=1" alt="可爱小动物">
-<img src="https://picsum.photos/250/200?random=2" alt="两只小动物">
-```
+        /* 粒子效果 */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ff69b4;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particle-float 2s ease-out forwards;
+        }
 
-## 💡 技术实现
+        @keyframes particle-float {
+            0% {
+                opacity: 1;
+                transform: scale(1) translate(0, 0);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0) translate(var(--dx), var(--dy));
+            }
+        }
 
-### CSS技术
-- **CSS Grid & Flexbox**：现代布局技术
-- **CSS动画**：@keyframes 实现各种动画效果
-- **渐变背景**：linear-gradient 创建美丽背景
-- **毛玻璃效果**：backdrop-filter 实现
-- **自定义属性**：CSS变量控制动画
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+            
+            .animal-img {
+                width: 250px;
+                height: 150px;
+            }
+            
+            h2 {
+                font-size: 24px;
+            }
+            
+            button {
+                padding: 12px 24px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景装饰 -->
+    <div class="hearts-bg" id="hearts-bg"></div>
 
-### JavaScript技术
-- **事件监听**：addEventListener 处理用户交互
-- **动态样式**：style 属性实时修改
-- **粒子系统**：动态创建和移除粒子元素
-- **动画控制**：setTimeout 和 CSS动画结合
+    <!-- 初始页面 -->
+    <div class="container" id="init-page">
+        <img src="image.png" alt="可爱小动物" class="animal-img" id="animal-img">
+        <h2>你愿意成为我的儿子吗？</h2>
+        <div class="btn-group">
+            <button id="yes-btn">可以 💕</button>
+            <button id="no-btn">不要 😅</button>
+        </div>
+    </div>
 
-### 性能优化
-- **CSS硬件加速**：使用 transform 和 opacity
-- **事件委托**：高效的事件处理
-- **内存管理**：及时清理不需要的元素
-- **动画优化**：使用 requestAnimationFrame 思路
+    <!-- 最终页面 -->
+    <div class="container hidden" id="final-page">
+        <div class="final-container">
+            <div class="final-text">!!!好大儿!! ( >◡< )♡°</div>
+            <img src="image.png" alt="两只小动物" class="final-img">
+            <div style="margin-top: 20px; font-size: 18px; opacity: 0.9;">
+                恭喜成为我的儿子
+            </div>
+        </div>
+    </div>
 
-## 🎯 适用场景
+    <script>
+        // 创建背景飘浮的心形
+        function createFloatingHearts() {
+            const heartsBg = document.getElementById('hearts-bg');
+            const heartSymbols = ['💖', '💕', '💗', '💝', '💘', '💞'];
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 6 + 's';
+                heart.style.animationDuration = (6 + Math.random() * 4) + 's';
+                heartsBg.appendChild(heart);
+            }
+        }
 
-- 💕 **表白神器**：浪漫的交互式表白
-- 🎁 **惊喜礼物**：给特别的人一个惊喜
-- 🎮 **趣味互动**：有趣的页面交互体验
-- 🎓 **教学演示**：学习前端动画和交互
-- 🎨 **创意展示**：展示前端技术能力
+        // 创建粒子效果
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            
+            const dx = (Math.random() - 0.5) * 200;
+            const dy = (Math.random() - 0.5) * 200;
+            particle.style.setProperty('--dx', dx + 'px');
+            particle.style.setProperty('--dy', dy + 'px');
+            
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 2000);
+        }
 
-## 🌟 扩展建议
+        // 创建多个粒子
+        function createParticles(x, y, count = 10) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    createParticle(x + Math.random() * 20 - 10, y + Math.random() * 20 - 10);
+                }, i * 50);
+            }
+        }
 
-- **音效支持**：添加按钮点击音效
-- **背景音乐**：浪漫的背景音乐
-- **更多动画**：增加更多交互动画
-- **个性化**：支持自定义主题色彩
-- **数据记录**：记录用户选择（需要后端）
+        // 主交互逻辑
+        const noBtn = document.getElementById('no-btn');
+        const yesBtn = document.getElementById('yes-btn');
+        const animalImg = document.getElementById('animal-img');
+        const initPage = document.getElementById('init-page');
+        const finalPage = document.getElementById('final-page');
 
-享受这温馨有趣的交互体验吧！💖✨
+        let scale = 1;
+        let yesBtnScale = 1;
+        const maxScale = 2.5; // 最大放大倍数
+        const maxYesBtnScale = 2.0; // "可以"按钮最大放大倍数
+        const scaleStep = 0.3; // 每次放大的步长
+        const yesBtnScaleStep = 0.15; // "可以"按钮每次放大的步长
+
+        // "不要"按钮点击事件
+        noBtn.addEventListener('click', (e) => {
+            // 创建粒子效果
+            const rect = e.target.getBoundingClientRect();
+            createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 15);
+            
+            // 放大动物图片
+            scale += scaleStep;
+            
+            // 放大"可以"按钮
+            yesBtnScale += yesBtnScaleStep;
+            if (yesBtnScale > maxYesBtnScale) {
+                yesBtnScale = maxYesBtnScale; // 限制最大放大倍数
+            }
+            yesBtn.style.transform = `scale(${yesBtnScale})`;
+            
+            // 为"可以"按钮添加发光效果
+            if (yesBtnScale > 1.5) {
+                yesBtn.style.boxShadow = `0 0 20px rgba(255, 107, 107, 0.8), 0 8px 25px rgba(238, 90, 36, 0.6)`;
+            }
+            
+            // 根据按钮大小改变文字提示
+            if (yesBtnScale > 1.8) {
+                yesBtn.innerHTML = '可以 💕<br><small>快选我！</small>';
+            } else if (yesBtnScale > 1.4) {
+                yesBtn.innerHTML = '可以 💕<br><small>别犹豫了！</small>';
+            } else if (yesBtnScale > 1.2) {
+                yesBtn.innerHTML = '可以 💕<br><small>选这个！</small>';
+            }
+            
+            if (scale > maxScale) {
+                // 放大到最大后，强制跳转到最终页面
+                initPage.style.transform = 'scale(0.8)';
+                initPage.style.opacity = '0';
+                
+                setTimeout(() => {
+                    initPage.classList.add('hidden');
+                    finalPage.classList.remove('hidden');
+                    // 创建庆祝粒子
+                    setTimeout(() => {
+                        const centerX = window.innerWidth / 2;
+                        const centerY = window.innerHeight / 2;
+                        createParticles(centerX, centerY, 30);
+                    }, 500);
+                }, 500);
+            } else {
+                animalImg.style.transform = `scale(${scale})`;
+                // 添加震动效果
+                animalImg.style.animation = 'none';
+                setTimeout(() => {
+                    animalImg.style.animation = 'pulse 2s ease-in-out infinite';
+                }, 100);
+            }
+        });
+
+        // "可以"按钮点击事件
+        yesBtn.addEventListener('click', (e) => {
+            // 重置按钮状态
+            yesBtnScale = 1;
+            yesBtn.style.transform = 'scale(1)';
+            yesBtn.style.boxShadow = '0 5px 15px rgba(238, 90, 36, 0.4)';
+            
+            // 创建爱心粒子效果
+            const rect = e.target.getBoundingClientRect();
+            createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 20);
+            
+            // 添加按钮特效
+            yesBtn.style.transform = 'scale(1.2)';
+            yesBtn.style.background = 'linear-gradient(45deg, #ff4757, #ff3838)';
+            
+            setTimeout(() => {
+                initPage.style.transform = 'scale(0.8)';
+                initPage.style.opacity = '0';
+                
+                setTimeout(() => {
+                    initPage.classList.add('hidden');
+                    finalPage.classList.remove('hidden');
+                    
+                    // 创建庆祝粒子
+                    setTimeout(() => {
+                        const centerX = window.innerWidth / 2;
+                        const centerY = window.innerHeight / 2;
+                        createParticles(centerX, centerY, 50);
+                    }, 500);
+                }, 500);
+            }, 300);
+        });
+
+        // 图片点击效果
+        animalImg.addEventListener('click', (e) => {
+            const rect = e.target.getBoundingClientRect();
+            createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 8);
+        });
+
+        // 页面加载完成后的初始化
+        window.addEventListener('load', () => {
+            createFloatingHearts();
+            
+            // 添加入场动画
+            initPage.style.opacity = '0';
+            initPage.style.transform = 'translateY(50px)';
+            
+            setTimeout(() => {
+                initPage.style.transition = 'all 1s ease';
+                initPage.style.opacity = '1';
+                initPage.style.transform = 'translateY(0)';
+            }, 100);
+        });
+
+        // 添加键盘支持
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                yesBtn.click();
+            } else if (e.key === 'Escape') {
+                noBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>
